@@ -17,25 +17,21 @@ const int SUM_LENGTH = 5;
 
 void send_data(double* data, int size, int myrank, int all_processes)
 {
-	if (all_processes > 1){
-		if (myrank > 0){
-			MPI_Send(data + 1, 1, MPI_DOUBLE, myrank - 1, myrank - 1, MPI_COMM_WORLD);
-		}
-		if (myrank < all_processes - 1){
-			MPI_Send(data + size, 1, MPI_DOUBLE, myrank + 1, myrank + 1, MPI_COMM_WORLD);
-		}
+	if (myrank > 0){
+		MPI_Send(data + 1, 1, MPI_DOUBLE, myrank - 1, myrank - 1, MPI_COMM_WORLD);
+	}
+	if (myrank < all_processes - 1){
+		MPI_Send(data + size, 1, MPI_DOUBLE, myrank + 1, myrank + 1, MPI_COMM_WORLD);
 	}
 }
 
 void recv_data(double* data, int size, int myrank, int all_processes, MPI_Status* status)
 {
-	if (all_processes > 1){
-		if (myrank < all_processes - 1){
-			MPI_Recv(data + size + 1, 1, MPI_DOUBLE, myrank + 1, myrank, MPI_COMM_WORLD, status);
-		}
-		if (myrank > 0){
-			MPI_Recv(data, 1, MPI_DOUBLE, myrank - 1, myrank, MPI_COMM_WORLD, status);
-		}
+	if (myrank < all_processes - 1){
+		MPI_Recv(data + size + 1, 1, MPI_DOUBLE, myrank + 1, myrank, MPI_COMM_WORLD, status);
+	}
+	if (myrank > 0){
+		MPI_Recv(data, 1, MPI_DOUBLE, myrank - 1, myrank, MPI_COMM_WORLD, status);
 	}
 }
 
@@ -122,13 +118,13 @@ int main(int argc, char* argv[])
 			start += recv_size;
 		}
 		
-		//Вывод результата на экран
+		/*//Вывод результата на экран
 		for (int i = 0; i <= ROD_PARTS; i++)
 			printf("%.6lf\n", results[i]);
 		
 		printf("-------------------------------------------\n");
 
-		/*for (int i = 1; i < ROD_PARTS; i++){
+		for (int i = 1; i < ROD_PARTS; i++){
 			double x = i * dl;
 			double sum = 0;
 			for (int m = 0; m < SUM_LENGTH; m++){
