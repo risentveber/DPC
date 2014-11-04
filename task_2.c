@@ -6,14 +6,14 @@
 #include <mpi.h>
 
 const double ROD_LENGTH = 1.0;
-const int ROD_PARTS = 10;
+const int ROD_PARTS = 100;
 
 const double TIME_TOTAL = 0.1;
-const int TIME_PARTS = 200;
+const int TIME_PARTS = 2000;
 
 const double TEMPERATURE_COEFF = 1.0;
 
-const int SUM_LENGTH = 5;
+const int SUM_LENGTH = 1;
 
 void send_data(double* data, int size, int myrank, int all_processes)
 {
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
 		
 		printf("-------------------------------------------\n");
 
-		/*for (int i = 1; i < ROD_PARTS; i++){
+		for (int i = 1; i < ROD_PARTS; i++){
 			double x = i * dl;
 			double sum = 0;
 			for (int m = 0; m < SUM_LENGTH; m++){
@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
 			}
 			double value = sum;
 			printf("%.6f\n delta = %.6f\n", value, fabs(value - results[i]));
-		}*/
+		}
 
 		free(results);
 	}
